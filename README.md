@@ -25,7 +25,9 @@ From the cluster login node.
 Run srun in interactive mode with the number of CPU, memory and optionally a max time you are going to use it for.
 So for example to limit it 10 minutes, use 8 CPUs and 4G of memory per CPU/executor on the 'interactive' partition:
 
-`srun -t 00:10:00 -c 8 --pty --mem-per-cpu 4000 -p interactive bash -i`
+```
+srun -t 00:10:00 -c 8 --pty --mem-per-cpu 4000 -p interactive bash -i
+```
 
 If necessary load modules for newer java and python.
 On our cluster this is what I currently use:
@@ -42,6 +44,9 @@ $SPARK_HOME/bin/spark-submit \
        --executor-memory 4G \
        $SPARK_HOME/examples/src/main/python/pi.py 10
 ```  
-
+By default spark has a good bit of logging but if it worked towards the end of the output you should see something like this:
+```
+Pi is roughly 3.155600
+```
 
 
