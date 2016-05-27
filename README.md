@@ -44,7 +44,8 @@ $SPARK_HOME/bin/spark-submit \
        --executor-memory 4G \
        $SPARK_HOME/examples/src/main/python/pi.py 10
 ```  
-By default spark has a good bit of logging but if it worked towards the end of the output you should see something like this:
+This should print out a good bit of progress log information.
+If it worked towards the end of the output you should see something like this:
 ```
 Pi is roughly 3.155600
 ```
