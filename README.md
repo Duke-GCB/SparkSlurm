@@ -35,6 +35,13 @@ On our cluster this is what I currently use:
 module load jdk/1.8.0_45-fasrc01
 module load python/2.7.9-fasrc01
 ```
+If you see errors like this:
+```
+Exception in thread "main" java.lang.NoClassDefFoundError: org/apache/spark/launcher/Main
+Caused by: java.lang.ClassNotFoundException: org.apache.spark.launcher.Main
+```
+you probably forgot to load java 8.
+
 Run the spark provided PI calculation specifying the same settings as above.
 
 ```
