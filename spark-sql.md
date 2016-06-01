@@ -72,7 +72,7 @@ It should show up as a table you can query:
 ```
 show tables;
 ```
-You can now run queries agains this table.
+You can now run queries against this table.
 For example:
 ```
 select count(*), sign from sig_cor group by sign;
