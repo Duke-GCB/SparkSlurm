@@ -113,5 +113,12 @@ or just use the special parquet syntax:
 select * from parquet.`sig_cor_counts.parquet/`;
 ```
 
+#### Tuning
+There are a good number of configuration options to try and improve run time or change memory usage.
 
-
+__Specify Partitions__
+```
+SET spark.sql.shuffle.partitions=100;
+```
+This will help determine how files are split up and processed via separate tasks.
+In practice it appears that this value is applied to parquet files when written and the number of saved partitions are used when reading parquet files.
