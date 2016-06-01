@@ -47,7 +47,7 @@ spark-sql>
 
 Keep in mind all commands must end with a ';'.
 
-#### Example SQL
+#### Query TSV Files
 __Create TSV Table__
 Given a tab separated file like at `/resources/sig_cor.tsv` with contents like this:
 ```
@@ -80,3 +80,16 @@ For example:
 select count(*), sign from sig_cor group by sign;
 ```
 When the query is run you will see progress bars as spark runs through a varying number of stages.
+
+#### Write Parquet Files
+You can save the output of a query into the spark native format 'parquet'.
+This example will create a directory 'sig_cor_counts.parquet' containing the results of a query.
+```
+CREATE TABLE sig_cor_counts
+USING org.apache.spark.sql.parquet
+OPTIONS (
+  path "sig_cor_counts.parquet"
+)
+AS SELECT count(*), sign from sig_cor group by sign;
+```
+
