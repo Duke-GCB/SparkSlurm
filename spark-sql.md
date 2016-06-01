@@ -22,4 +22,4 @@ Launch an interactive spark job:
 ```
 srun -t 00:20:00 -c 8 --pty --mem-per-cpu 4000 -p interactive,all,new bash -i
 ```
-This sets 20 min timeout, enabling interactive terminal and gives a list of partitions to try "interactive,all,new".
+This sets 20 min timeout, enabling interactive terminal and gives a list of partitions to try and find resources for our node "interactive,all,new".
