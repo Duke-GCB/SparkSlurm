@@ -17,6 +17,17 @@ I was able to run it successfuly with `spark-1.6.1-bin-hadoop2.6`.
 I had issues with `spark-1.6.1-bin-without-hadoop.tgz` failing when running under linux.
 
 
+I had kryoserializer errors where file chunks where too big to be passed around. 
+To fix this run:
+```
+cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/defaults.conf
+```
+Then add the following to the end of $SPARK_HOME/conf/defaults.conf
+```
+spark.kryoserializer.buffer.max    1g
+```
+
+
 ## Modes of Operation
 There are three ways you can run spark on a shared slurm cluster: an interactive session utilizing a single node, a sbatch run utilizing a single node and a sbatch run using multiple nodes. One more possibility not presented here is to setup a permanent cluster.
 
