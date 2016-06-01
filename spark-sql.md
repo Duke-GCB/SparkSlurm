@@ -122,3 +122,4 @@ SET spark.sql.shuffle.partitions=100;
 ```
 This will help determine how files are split up and processed via separate tasks.
 In practice it appears that this value is applied to parquet files when written and the number of saved partitions are used when reading parquet files.
+Changing this value can help with too many open files or out of memory issues.
