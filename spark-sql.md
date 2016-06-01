@@ -18,8 +18,16 @@ Download spark and set $SPARK_HOME, $SPARK_BIN and $SPARK_SBIN as outlined in th
 ## Run on an interactive node
 You need to decide how many CPU and how much memory to use for your workload.
 The rest of the steps will assume 8 CPU and 4G memory.
-Launch an interactive spark job:
+
+#### Launch an interactive spark job
 ```
 srun -t 00:20:00 -c 8 --pty --mem-per-cpu 4000 -p interactive,all,new bash -i
 ```
-This sets 20 min timeout, enabling interactive terminal and gives a list of partitions to try and find resources for our node "interactive,all,new".
+This sets 20 min timeout, enabling interactive terminal and gives a list of partitions to try and find resources for our node "interactive,all,new". It should return you to a prompt on the node we will use for spark-sql.
+
+#### Start spark-sql repl
+```
+$SPARK_BIN/spark-sql --packages com.databricks:spark-csv_2.10:1.4.0 --total-executor-cores 7 --executor-memory 4G --driver-memory 4G 
+```
+By default different spark commands try to take up all available memory and CPU so it is important to specify these items.
+We are using 1 core for the 'driver' and 87 cores for the 'executors'.
