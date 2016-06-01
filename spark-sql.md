@@ -68,6 +68,8 @@ OPTIONS (
    nullValue "NA"
 );
 ```
+The nullValue option converts columns with this value to NULL in the database.
+
 It should show up as a table you can query:
 ```
 show tables;
