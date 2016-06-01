@@ -39,7 +39,7 @@ spark-sql>
 ```
 
 
-#### SQL commands
+#### Useful commands
 * `source <sql_filename>;` - executes the SQL in _sql_filename_
 * `show tables;` - prints out a list of table names
 * `describe <tablename>;` - prints out columns and their types for _tablename_
