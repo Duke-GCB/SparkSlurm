@@ -47,6 +47,8 @@ spark-sql>
 
 Keep in mind all commands must end with a ';'.
 
+Option-TAB will display 'autocomplete' info.
+
 #### Query TSV Files
 __Create TSV Table__
 Given a tab separated file like at `/resources/sig_cor.tsv` with contents like this:
