@@ -46,3 +46,35 @@ spark-sql>
 * `quit;` - exit the spark REPL
 
 Keep in mind all commands must end with a ';'.
+
+#### Example SQL
+__Create TSV Table__
+Given a tab separated file like at `/resources/sig_cor.tsv` with contents like this:
+```
+123456  ab12345 -1
+123457  cd12345 1
+```
+You can describe it to spark with the following SQL:
+```
+CREATE TEMPORARY TABLE sig_cor (
+   expr_id string,
+   meth_id string,
+   sign int
+)
+USING com.databricks.spark.csv
+OPTIONS (
+   path "/resources/sig_cor.tsv",
+   delimiter "\t",
+   nullValue "NA"
+);
+```
+It should show up as a table you can query:
+```
+show tables;
+```
+You can now run queries agains this table.
+For example:
+```
+select count(*), sign from sig_cor group by sign;
+```
+When the query is run you will see progress bars as spark runs through a varying number of stages.
