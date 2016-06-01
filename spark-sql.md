@@ -27,7 +27,8 @@ This sets 20 min timeout, enabling interactive terminal and gives a list of part
 
 #### Start spark-sql repl
 ```
-$SPARK_BIN/spark-sql --packages com.databricks:spark-csv_2.10:1.4.0 --total-executor-cores 7 --executor-memory 4G --driver-memory 4G 
+$SPARK_BIN/spark-sql --packages com.databricks:spark-csv_2.10:1.4.0 \ 
+  --total-executor-cores 7 --executor-memory 4G --driver-memory 4G 
 ```
 By default different spark commands try to take up all available memory and CPU so it is important to specify these items.
 We are using 1 core for the 'driver' and 87 cores for the 'executors'.
@@ -36,3 +37,12 @@ After a few lines of output you should see the spark-sql prompt:
 ```
 spark-sql>
 ```
+
+
+#### SQL commands
+* `source <sql_filename>;` - executes the SQL in _sql_filename_
+* `show tables;` - prints out a list of table names
+* `describe <tablename>;` - prints out columns and their types for _tablename_
+* `quit;` - exit the spark REPL
+
+Keep in mind all commands must end with a ';'.
