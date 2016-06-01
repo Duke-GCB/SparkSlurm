@@ -13,3 +13,5 @@ _Something to keep in mind is making sure slurm and spark are both aware of what
 Spark has some documentation on using SQL but it is a little sparse: [Spark SQL, DataFrames and Datasets Guide](http://spark.apache.org/docs/latest/sql-programming-guide.html)
 
 ## Getting Started
+Download spark and set $SPARK_HOME, $SPARK_BIN and $SPARK_SBIN by following the __Setup__ step from these [Instructions](https://github.com/Duke-GCB/SparkSlurm/blob/master/README.md#setup).
+
