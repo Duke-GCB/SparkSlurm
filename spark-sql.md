@@ -116,7 +116,7 @@ select * from parquet.`sig_cor_counts.parquet/`;
 ## Tuning
 There are a good number of configuration options to try and improve run time or change memory usage.
 
-__Increasing CPUs or Memory__
+#### Increasing CPUs or Memory
 Just increase the values passed into srun and spark-sql.
 For example to use 16 CPU and 8G do the following:
 ```
@@ -127,11 +127,11 @@ $SPARK_BIN/spark-sql --packages com.databricks:spark-csv_2.10:1.4.0 \
 To use more CPU/memory than is available on a single node requires additional setup.
 ...TODO...
 
-__Increasing number of driver CPUs__
+#### Increasing number of driver CPUs
 You can give the driver more cores via the spark-sql `--driver-cores <NUM_CORES`. 
 This defaults to 1.
 
-__Specify Partitions__
+#### Specify Partitions
 ```
 SET spark.sql.shuffle.partitions=100;
 ```
