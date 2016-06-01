@@ -31,3 +31,8 @@ $SPARK_BIN/spark-sql --packages com.databricks:spark-csv_2.10:1.4.0 --total-exec
 ```
 By default different spark commands try to take up all available memory and CPU so it is important to specify these items.
 We are using 1 core for the 'driver' and 87 cores for the 'executors'.
+
+After a few lines of output you should see the spark-sql prompt:
+```
+spark-sql>
+```
