@@ -10,6 +10,8 @@ Steps:
 * Download a pre-built version of spark that contains hadoop [downloads](http://spark.apache.org/downloads.html).
 * Extract it to a shared location on the cluster.
 * Set the SPARK_HOME environment variable. eg. `export SPARK_HOME=.../spark-1.6.1-bin-hadoop2.6`.
+* Set the SPARK_BIN environment variable. eg. `export SPARK_BIN=$SPARK_HOME/bin`.
+* Set the SPARK_SBIN environment variable. eg. `export export SPARK_SBIN=$SPARK_HOME/sbin`.
 
 I was able to run it successfuly with `spark-1.6.1-bin-hadoop2.6`.
 I had issues with `spark-1.6.1-bin-without-hadoop.tgz` failing when running under linux.
