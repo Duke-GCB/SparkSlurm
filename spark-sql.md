@@ -15,3 +15,11 @@ Spark has some documentation on using SQL but it is a little sparse: [Spark SQL,
 ## Getting Started
 Download spark and set $SPARK_HOME, $SPARK_BIN and $SPARK_SBIN as outlined in the __Setup__ step from these [Instructions](https://github.com/Duke-GCB/SparkSlurm/blob/master/README.md#setup).
 
+## Run on an interactive node
+You need to decide how many CPU and how much memory to use for your workload.
+The rest of the steps will assume 8 CPU and 4G memory.
+Launch an interactive spark job:
+```
+srun -t 00:20:00 -c 8 --pty --mem-per-cpu 4000 -p interactive,all,new bash -i
+```
+This sets 20 min timeout, enabling interactive terminal and gives a list of partitions to try "interactive,all,new".
