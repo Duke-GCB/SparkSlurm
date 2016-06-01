@@ -31,7 +31,7 @@ $SPARK_BIN/spark-sql --packages com.databricks:spark-csv_2.10:1.4.0 \
   --total-executor-cores 7 --executor-memory 4G --driver-memory 4G 
 ```
 By default different spark commands try to take up all available memory and CPU so it is important to specify these items.
-We are using 1 core for the 'driver' and 87 cores for the 'executors'.
+We are using 1 core for the 'driver' and 87 cores for the 'executors'. We are including the _spark-csv_ package to allow reading tsv files.
 
 After a few lines of output you should see the spark-sql prompt:
 ```
