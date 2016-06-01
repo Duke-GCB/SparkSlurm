@@ -115,6 +115,7 @@ select * from parquet.`sig_cor_counts.parquet/`;
 
 ## Tuning
 There are a good number of configuration options to try and improve run time or change memory usage.
+You may benefit by reading [Cluster Mode Overview](http://spark.apache.org/docs/latest/cluster-overview.html) to better understand what changes these parameters have.
 
 #### Increasing CPUs or Memory
 Just increase the values passed into srun and spark-sql.
