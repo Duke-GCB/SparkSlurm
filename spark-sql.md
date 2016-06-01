@@ -113,7 +113,7 @@ or just use the special parquet syntax:
 select * from parquet.`sig_cor_counts.parquet/`;
 ```
 
-#### Tuning
+## Tuning
 There are a good number of configuration options to try and improve run time or change memory usage.
 
 __Increasing CPUs or Memory__
@@ -126,6 +126,10 @@ $SPARK_BIN/spark-sql --packages com.databricks:spark-csv_2.10:1.4.0 \
 ```
 To use more CPU/memory than is available on a single node requires additional setup.
 ...TODO...
+
+__Increasing number of driver CPUs__
+You can give the driver more cores via the spark-sql `--driver-cores <NUM_CORES`. 
+This defaults to 1.
 
 __Specify Partitions__
 ```
