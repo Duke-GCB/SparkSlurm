@@ -92,4 +92,24 @@ OPTIONS (
 )
 AS SELECT count(*), sign from sig_cor group by sign;
 ```
+After this `show tables;` will show sig_cor_counts as another table to query.
+This table will be persisted between sessions via the 'metastore_db' directory spark-sql creates.
+You may want to delete this to purge the metadata.
+
+#### Read Parquet Files
+You can create the temp table similar to how we did for tsv:
+```
+CREATE TEMPORARY TABLE sig_cor_counts
+USING org.apache.spark.sql.parquet
+OPTIONS (
+  path "sig_cor_counts.parquet"
+);
+SELECT * from sig_cor_counts;
+```
+or just use the special parquet syntax:
+```
+select * from parquet.`sig_cor_counts.parquet/`;
+```
+
+
 
