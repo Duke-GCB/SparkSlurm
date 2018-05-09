@@ -19,7 +19,18 @@ Check the slurm-*.out file created by this job.
 The top line should contain the spark master address. (`spark://<nodename>:7077`)
 This needs to be passed in to your spark commands to 
 
-## Troubleshooting
+## Run an example command against the spark cluster
+```
+SPARK_MASTER=spark://<nodename>:7077
+$SPARK_HOME/bin/spark-submit --master $SPARK_MASTER $SPARK_HOME/examples/src/main/python/pi.py
+```
+
+## Stop spark cluster
+```
+scancel <JOBID>
+```
+
+# Troubleshooting
 
 If you have kryoserializer errors where file chunks where too big to be passed around. 
 To fix this run:
@@ -30,6 +41,3 @@ Then add the following to the end of $SPARK_HOME/conf/defaults.conf
 ```
 spark.kryoserializer.buffer.max    1g
 ```
-
-
-
