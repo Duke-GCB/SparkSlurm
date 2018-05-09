@@ -9,6 +9,7 @@ Steps:
 * Set the SPARK_HOME environment variable. eg. `export SPARK_HOME=.../spark-2.3.0-bin-hadoop2.7`.
 
 ## Start spark cluster
+
 ```
 #!/bin/bash
 
