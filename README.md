@@ -16,8 +16,8 @@ This will start up multiple nodes and continue running until you `scancel` this 
 sbatch spark.sbatch
 ```
 Check the slurm-*.out file created by this job. 
-The top line should contain the spark master address. (`spark://<nodename>:7077`)
-This needs to be passed in to your spark commands to 
+The top line should contain the spark master address. eg. `spark://<nodename>:7077`
+This needs to be passed in to your spark commands.
 
 ## Run an example command against the spark cluster
 ```
@@ -25,15 +25,14 @@ SPARK_MASTER=spark://<nodename>:7077
 $SPARK_HOME/bin/spark-submit --master $SPARK_MASTER $SPARK_HOME/examples/src/main/python/pi.py
 ```
 
+## Stop spark cluster
+```
+scancel <JOBID>
+```
 
 ## Run a spark command that will spin up a single node spark cluster
 ```
 $SPARK_HOME/bin/spark-submit $SPARK_HOME/examples/src/main/python/pi.py
-```
-
-## Stop spark cluster
-```
-scancel <JOBID>
 ```
 
 # Troubleshooting
