@@ -7,7 +7,7 @@ Steps:
 * Download a version 2+ of spark that contains hadoop from [downloads](http://spark.apache.org/downloads.html).
 * Extract it to a shared location on the cluster. Your home directory for example.
 * Set the SPARK_HOME environment variable. eg. `export SPARK_HOME=.../spark-2.3.0-bin-hadoop2.7`.
-* Download `spark.sbatch` from this repo. Update `spark-2.3.0-bin-hadoop2.7` for the version you downloaded.
+* Download [spark.sbatch](https://github.com/Duke-GCB/SparkSlurm/blob/master/spark.sbatch) from this repo. Update `spark-2.3.0-bin-hadoop2.7` for the version of spark you downloaded.
 
 ## Start spark cluster
 Start a sbatch job that will run your cluster. 
