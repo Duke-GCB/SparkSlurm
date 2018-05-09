@@ -1,23 +1,57 @@
 # SparkSlurm
-Notes and scripts for running Spark on a shared slurm cluster.
-
-I am running spark in the standalone mode: [docs](http://spark.apache.org/docs/latest/spark-standalone.html).
-
-
+Running Spark on a Slurm cluster.
+This works via spark in the standalone mode: [docs](http://spark.apache.org/docs/latest/spark-standalone.html).
 
 ## Setup
 Steps:
-* Download a pre-built version of spark that contains hadoop [downloads](http://spark.apache.org/downloads.html).
-* Extract it to a shared location on the cluster.
-* Set the SPARK_HOME environment variable. eg. `export SPARK_HOME=.../spark-1.6.1-bin-hadoop2.6`.
-* Set the SPARK_BIN environment variable. eg. `export SPARK_BIN=$SPARK_HOME/bin`.
-* Set the SPARK_SBIN environment variable. eg. `export export SPARK_SBIN=$SPARK_HOME/sbin`.
+* Download a version 2+ of spark that contains hadoop from [downloads](http://spark.apache.org/downloads.html).
+* Extract it to a shared location on the cluster. Your home directory for example.
+* Set the SPARK_HOME environment variable. eg. `export SPARK_HOME=.../spark-2.3.0-bin-hadoop2.7`.
 
-I was able to run it successfuly with `spark-1.6.1-bin-hadoop2.6`.
-I had issues with `spark-1.6.1-bin-without-hadoop.tgz` failing when running under linux.
+## Start spark cluster
+```
+#!/bin/bash
 
+# Make 3 nodes: 1 master 2 workers using 8 CPUs on each
+# Allocate 4000 MB memory per CPU
+#SBATCH -N 3
+#SBATCH --mem-per-cpu 4000
+#SBATCH --ntasks-per-node 1
+#SBATCH --cpus-per-task 8
 
-I had kryoserializer errors where file chunks where too big to be passed around. 
+BASE_DIR=~
+NUM_WORKERS=2
+CORES=8
+MEMORY=4G
+
+export SPARK_HOME=$BASE_DIR/spark-2.3.0-bin-hadoop2.7
+export SPARK_NO_DAEMONIZE=Y
+MASTER=$(hostname)
+export MASTER_SPARK_ADDR="spark://$MASTER:7077"
+echo "Spark cluster master address: $MASTER_SPARK_ADDR
+
+# load java and python modules
+module load jdk/1.8.0_45-fasrc01
+module load python/2.7.9-fasrc01
+
+echo "starting master"
+$SPARK_HOME/sbin/start-master.sh &
+sleep 1
+
+for i in $(seq $NUM_WORKERS)
+do
+   echo "starting slave $i"
+   $SPARK_HOME/sbin/start-slave.sh $MASTER_SPARK_ADDR --cores $CORES --memory $MEMORY &
+   sleep 1
+done
+
+echo "NOTE: You must scancel this process. It will continue to run."
+wait
+```
+
+## Troubleshooting
+
+If you have kryoserializer errors where file chunks where too big to be passed around. 
 To fix this run:
 ```
 cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/defaults.conf
@@ -27,47 +61,5 @@ Then add the following to the end of $SPARK_HOME/conf/defaults.conf
 spark.kryoserializer.buffer.max    1g
 ```
 
-
-## Modes of Operation
-There are three ways you can run spark on a shared slurm cluster: an interactive session utilizing a single node, a sbatch run utilizing a single node and a sbatch run using multiple nodes. One more possibility not presented here is to setup a permanent cluster.
-
-__Single Node interactive session__
-
-From the cluster login node.
-
-Run srun in interactive mode with the number of CPU, memory and optionally a max time you are going to use it for.
-So for example to limit it 10 minutes, use 8 CPUs and 4G of memory per CPU/executor on the 'interactive' partition:
-
-```
-srun -t 00:10:00 -c 8 --pty --mem-per-cpu 4000 -p interactive bash -i
-```
-
-If necessary load modules for newer java and python.
-On our cluster this is what I currently use:
-```
-module load jdk/1.8.0_45-fasrc01
-module load python/2.7.9-fasrc01
-```
-If you see errors like this:
-```
-Exception in thread "main" java.lang.NoClassDefFoundError: org/apache/spark/launcher/Main
-Caused by: java.lang.ClassNotFoundException: org.apache.spark.launcher.Main
-```
-you probably forgot to load java 8.
-
-Run the spark provided PI calculation specifying the same settings as above.
-
-```
-$SPARK_HOME/bin/spark-submit \
-       --driver-memory 4G \
-       --total-executor-cores 8 \
-       --executor-memory 4G \
-       $SPARK_HOME/examples/src/main/python/pi.py 10
-```  
-This should print out a good bit of progress log information.
-If it worked towards the end of the output you should see something like this:
-```
-Pi is roughly 3.155600
-```
 
 
