@@ -1,23 +1,44 @@
 # SparkSlurm
-Notes and scripts for running Spark on a shared slurm cluster.
-
-I am running spark in the standalone mode: [docs](http://spark.apache.org/docs/latest/spark-standalone.html).
-
-
+Running Spark on a Slurm cluster.
+This works via spark in the standalone mode: [docs](http://spark.apache.org/docs/latest/spark-standalone.html).
 
 ## Setup
 Steps:
-* Download a pre-built version of spark that contains hadoop [downloads](http://spark.apache.org/downloads.html).
-* Extract it to a shared location on the cluster.
-* Set the SPARK_HOME environment variable. eg. `export SPARK_HOME=.../spark-1.6.1-bin-hadoop2.6`.
-* Set the SPARK_BIN environment variable. eg. `export SPARK_BIN=$SPARK_HOME/bin`.
-* Set the SPARK_SBIN environment variable. eg. `export export SPARK_SBIN=$SPARK_HOME/sbin`.
+* Download a version 2+ of spark that contains hadoop from [downloads](http://spark.apache.org/downloads.html).
+* Extract it to a shared location on the cluster. Your home directory for example.
+* Set the SPARK_HOME environment variable. eg. `export SPARK_HOME=.../spark-2.3.0-bin-hadoop2.7`.
+* Download [spark.sbatch](https://github.com/Duke-GCB/SparkSlurm/blob/master/spark.sbatch) from this repo. Update `spark-2.3.0-bin-hadoop2.7` for the version of spark you downloaded.
 
-I was able to run it successfuly with `spark-1.6.1-bin-hadoop2.6`.
-I had issues with `spark-1.6.1-bin-without-hadoop.tgz` failing when running under linux.
+## Start spark cluster
+Start a sbatch job that will run your cluster. 
+This will start up multiple nodes and continue running until you `scancel` this job.
+```
+sbatch spark.sbatch
+```
+Check the slurm-*.out file created by this job. 
+The top line should contain the spark master address. (`spark://<nodename>:7077`)
+This needs to be passed in to your spark commands to 
+
+## Run an example command against the spark cluster
+```
+SPARK_MASTER=spark://<nodename>:7077
+$SPARK_HOME/bin/spark-submit --master $SPARK_MASTER $SPARK_HOME/examples/src/main/python/pi.py
+```
 
 
-I had kryoserializer errors where file chunks where too big to be passed around. 
+## Run a spark command that will spin up a single node spark cluster
+```
+$SPARK_HOME/bin/spark-submit $SPARK_HOME/examples/src/main/python/pi.py
+```
+
+## Stop spark cluster
+```
+scancel <JOBID>
+```
+
+# Troubleshooting
+
+If you have kryoserializer errors where file chunks where too big to be passed around. 
 To fix this run:
 ```
 cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/defaults.conf
@@ -26,48 +47,3 @@ Then add the following to the end of $SPARK_HOME/conf/defaults.conf
 ```
 spark.kryoserializer.buffer.max    1g
 ```
-
-
-## Modes of Operation
-There are three ways you can run spark on a shared slurm cluster: an interactive session utilizing a single node, a sbatch run utilizing a single node and a sbatch run using multiple nodes. One more possibility not presented here is to setup a permanent cluster.
-
-__Single Node interactive session__
-
-From the cluster login node.
-
-Run srun in interactive mode with the number of CPU, memory and optionally a max time you are going to use it for.
-So for example to limit it 10 minutes, use 8 CPUs and 4G of memory per CPU/executor on the 'interactive' partition:
-
-```
-srun -t 00:10:00 -c 8 --pty --mem-per-cpu 4000 -p interactive bash -i
-```
-
-If necessary load modules for newer java and python.
-On our cluster this is what I currently use:
-```
-module load jdk/1.8.0_45-fasrc01
-module load python/2.7.9-fasrc01
-```
-If you see errors like this:
-```
-Exception in thread "main" java.lang.NoClassDefFoundError: org/apache/spark/launcher/Main
-Caused by: java.lang.ClassNotFoundException: org.apache.spark.launcher.Main
-```
-you probably forgot to load java 8.
-
-Run the spark provided PI calculation specifying the same settings as above.
-
-```
-$SPARK_HOME/bin/spark-submit \
-       --driver-memory 4G \
-       --total-executor-cores 8 \
-       --executor-memory 4G \
-       $SPARK_HOME/examples/src/main/python/pi.py 10
-```  
-This should print out a good bit of progress log information.
-If it worked towards the end of the output you should see something like this:
-```
-Pi is roughly 3.155600
-```
-
-
