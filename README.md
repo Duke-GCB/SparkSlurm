@@ -25,6 +25,12 @@ SPARK_MASTER=spark://<nodename>:7077
 $SPARK_HOME/bin/spark-submit --master $SPARK_MASTER $SPARK_HOME/examples/src/main/python/pi.py
 ```
 
+
+## Run a spark command that will spin up a single node spark cluster
+```
+$SPARK_HOME/bin/spark-submit $SPARK_HOME/examples/src/main/python/pi.py
+```
+
 ## Stop spark cluster
 ```
 scancel <JOBID>
